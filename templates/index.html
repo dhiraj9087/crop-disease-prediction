@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Disease Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Crop Disease Prediction</h1>
+        <p>Upload an image of a crop leaf to predict its disease.</p>
+        
+        <div class="upload-section">
+            <input type="file" id="imageInput" accept="image/*">
+            <button onclick="predict()">Predict Disease</button>
+        </div>
+        
+        <div id="result" class="result-section">
+            <!-- Results will be displayed here -->
+        </div>
+        
+        <div id="images" class="image-section">
+            <!-- Uploaded image and mask will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        async function predict() {
+            const input = document.getElementById('imageInput');
+            if (!input.files.length) {
+                alert('Please select an image.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', input.files[0]);
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (result.error) {
+                document.getElementById('result').innerHTML = `<p class="error">${result.error}</p>`;
+                return;
+            }
+
+            document.getElementById('result').innerHTML = `
+                <h2>Prediction Result</h2>
+                <p><strong>Disease:</strong> ${result.disease}</p>
+                <p><strong>Confidence:</strong> ${result.confidence}</p>
+            `;
+
+            // document.getElementById('images').innerHTML = `
+            //     <div class="image-container">
+            //         <h3>Uploaded Image</h3>
+            //         <img src="${result.image_path}" alt="Uploaded Image">
+            //     </div>
+            //     <div class="image-container">
+            //         <h3>Generated Mask</h3>
+            //         <img src="${result.mask_path}" alt="Generated Mask">
+            //     </div>
+            // `;
+        }
+    </script>
+</body>
+</html>
+
+
+

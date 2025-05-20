@@ -1,0 +1,16 @@
+# Python virtual environment
+venv/
+
+# Model files (large, avoid uploading to GitHub)
+models/unet_model.h5
+models/resnet50_model.h5
+
+# Uploaded images
+static/uploads/*
+
+# Python cache
+__pycache__/
+*.pyc
+
+# macOS files
+.DS_Store
