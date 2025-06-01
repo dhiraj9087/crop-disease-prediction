@@ -1,65 +1,379 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+/* Reset default styles for consistency */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
+/* Custom CSS variables for reusability */
+:root {
+    --primary-color: #2e7d32; /* Green, inspired by leaves */
+    --secondary-color: #f5f5f5; /* Light background */
+    --accent-color: #ffca28; /* Amber for buttons and highlights */
+    --text-color: #333;
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --transition: all 0.3s ease-in-out;
+}
+
+/* Body with animated gradient background */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #a5d6a7 0%, #4caf50 50%, #a5d6a7 100%);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+    animation: gradientShift 15s ease-in-out infinite;
+}
+
+/* Animated gradient background */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Container for moving leaves effect */
+.leaves-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Prevent interaction with leaves */
+    z-index: 0; /* Behind main content */
+}
+
+/* Leaf elements */
+.leaf {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%232e7d32"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>') no-repeat center;
+    background-size: contain;
+    opacity: 0.7;
+    animation: drift linear infinite;
+}
+
+/* Individual leaf animations with varied properties */
+.leaf:nth-child(1) {
+    top: -24px;
+    left: 10%;
+    animation-duration: 12s;
+    animation-delay: 0s;
+    transform: scale(0.8);
+}
+
+.leaf:nth-child(2) {
+    top: -24px;
+    left: 30%;
+    animation-duration: 15s;
+    animation-delay: 2s;
+    transform: scale(1.2);
+}
+
+.leaf:nth-child(3) {
+    top: -24px;
+    left: 50%;
+    animation-duration: 10s;
+    animation-delay: 4s;
+    transform: scale(0.9);
+}
+
+.leaf:nth-child(4) {
+    top: -24px;
+    left: 70%;
+    animation-duration: 13s;
+    animation-delay: 6s;
+    transform: scale(1.1);
+}
+
+.leaf:nth-child(5) {
+    top: -24px;
+    left: 90%;
+    animation-duration: 11s;
+    animation-delay: 8s;
+    transform: scale(0.7);
+}
+
+/* Drift animation with falling and swaying */
+@keyframes drift {
+    0% {
+        transform: translateY(-100vh) translateX(0) rotate(0deg);
+        opacity: 0.7;
+    }
+    50% {
+        transform: translateY(50vh) translateX(50px) rotate(180deg);
+        opacity: 0.5;
+    }
+    100% {
+        transform: translateY(100vh) translateX(-50px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Main container with CSS Grid */
 .container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: var(--secondary-color);
+    border-radius: 1rem;
+    box-shadow: var(--shadow);
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+    position: relative;
+    z-index: 1; /* Above leaves */
 }
 
+/* Header with animated title and pulse effect */
 h1 {
-    color: #2e7d32;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    text-align: center;
+    animation: fadeInDown 1s ease-out, pulse 2s infinite;
 }
 
+/* Subtle pulse animation for header */
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+/* Subheading with fade-in */
+p {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 1s ease-out;
+}
+
+/* Upload section with Flexbox and hover glow */
 .upload-section {
-    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
 }
 
-input[type="file"] {
-    margin: 10px;
+.upload-section:hover {
+    box-shadow: 0 0 15px rgba(46, 125, 50, 0.5);
 }
 
-button {
-    background-color: #4caf50;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
+/* Style file input with custom design */
+#imageInput {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 2px solid var(--primary-color);
+    border-radius: 0.5rem;
+    background: #fff;
+    transition: var(--transition);
     cursor: pointer;
 }
 
+#imageInput:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(255, 202, 40, 0.5);
+}
+
+/* Button with gradient and bounce animation */
+button {
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+    color: #fff;
+    background: linear-gradient(45deg, var(--primary-color), #4caf50);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow);
+    animation: bounce 2s infinite;
+}
+
 button:hover {
-    background-color: #45a049;
+    transform: translateY(-2px);
+    background: linear-gradient(45deg, #4caf50, var(--primary-color));
 }
 
+button:active {
+    transform: translateY(0);
+}
+
+/* Bounce animation for button */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Result section with scale-in animation */
 .result-section {
-    margin: 20px 0;
-}
-
-.error {
-    color: red;
-}
-
-.image-section {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
-
-.image-container {
     text-align: center;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow);
+    animation: scaleIn 0.5s ease-out;
+}
+
+.result-section h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.result-section p {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+}
+
+/* Error message styling */
+.error {
+    color: #d32f2f;
+    font-weight: bold;
+}
+
+/* Image section with CSS Grid and hover rotate */
+.image-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+/* Image containers with hover rotate effect */
+.image-container {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow);
+    text-align: center;
+    transition: var(--transition);
+}
+
+.image-container:hover {
+    transform: rotate(2deg);
+}
+
+.image-container h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
 }
 
 .image-container img {
-    max-width: 300px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Loading spinner (for optional index.html with spinner) */
+.loading {
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--secondary-color);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 0.5rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    .upload-section {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+        padding: 0.75rem;
+    }
+
+    .image-section {
+        grid-template-columns: 1fr;
+    }
+
+    .leaf {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    .result-section {
+        padding: 1rem;
+    }
+
+    .image-container img {
+        max-width: 100%;
+    }
+
+    .leaf {
+        width: 14px;
+        height: 14px;
+    }
 }

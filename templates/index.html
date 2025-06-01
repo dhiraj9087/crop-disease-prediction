@@ -1,9 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Disease Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head> -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crop Disease Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
@@ -54,16 +62,11 @@
                 <p><strong>Confidence:</strong> ${result.confidence}</p>
             `;
 
-            // document.getElementById('images').innerHTML = `
-            //     <div class="image-container">
-            //         <h3>Uploaded Image</h3>
-            //         <img src="${result.image_path}" alt="Uploaded Image">
-            //     </div>
-            //     <div class="image-container">
-            //         <h3>Generated Mask</h3>
-            //         <img src="${result.mask_path}" alt="Generated Mask">
-            //     </div>
-            // `;
+            document.getElementById('images').innerHTML = `
+                <div class="image-container">
+                    <h3>Uploaded Image</h3>
+                    <img src="${result.image_path}" alt="Uploaded Image">
+                </div>`;
         }
     </script>
 </body>

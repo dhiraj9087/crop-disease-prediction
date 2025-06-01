@@ -68,27 +68,21 @@ def preprocess_image(image_path, target_size):
     return img, img_array
 
 def generate_mask(image_array):
-    # UNet expects input shape (1, 128, 128, 3)
     img_array = cv2.resize(image_array, (128, 128))
     img_array = np.expand_dims(img_array, axis=0)
     mask = unet_model.predict(img_array)  # Shape: (1, 128, 128, 39)
-    # Convert 39-class mask to single-channel binary mask
     mask = np.argmax(mask, axis=-1)  # Shape: (1, 128, 128)
     mask = mask[0]  # Shape: (128, 128)
     mask = (mask > 0).astype(np.uint8) * 255  # Binary mask (0 or 255)
-    # Resize mask to (224, 224) for ResNet50
     mask = cv2.resize(mask, (224, 224), interpolation=cv2.INTER_NEAREST)
     return mask
 
 def predict_disease(original_img, mask):
-    # Create 4-channel input for ResNet50: RGB + mask
     mask_channel = mask.astype('float32') / 255.0
     mask_channel = mask_channel[..., np.newaxis]  # Shape: (224, 224, 1)
     img_array = original_img.astype('float32') / 255.0  # Shape: (224, 224, 3)
     combined_input = np.concatenate([img_array, mask_channel], axis=-1)  # Shape: (224, 224, 4)
     combined_input = np.expand_dims(combined_input, axis=0)  # Shape: (1, 224, 224, 4)
-    
-    # Predict using ResNet50
     prediction = resnet_model.predict(combined_input)
     predicted_class = np.argmax(prediction, axis=1)[0]
     confidence = float(np.max(prediction))
@@ -112,7 +106,8 @@ def predict():
         filename = str(uuid.uuid4()) + '.' + file.filename.rsplit('.', 1)[1].lower()
         file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(file_path)
-        
+        logger.info(f"Uploaded image saved to: {file_path}")
+
         # Process image for UNet (128, 128) and ResNet50 (224, 224)
         _, img_array_unet = preprocess_image(file_path, target_size=(128, 128))
         original_img, _ = preprocess_image(file_path, target_size=(224, 224))
@@ -130,7 +125,7 @@ def predict():
         result = {
             'disease': disease,
             'confidence': f'{confidence:.2%}',
-            # 'image_path': file_path.replace('static/', ''),
+            'image_path': f'static/uploads/{filename}'
             # 'mask_path': mask_path.replace('static/', '')
         }
         
